@@ -2,14 +2,18 @@ import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import { createClient } from 'contentful'
+/* components */
+import RecipeCard from '../components/RecipeCard'
+/* types */
+import { Post } from '../Type'
+
+// 仕上げにvercelのhookをcontentfulに登録することを忘れずに！
 
 type Props = {
-  posts: any
+  posts: Post[]
 }
 
 export const Home = ({ posts }: Props) => {
-  console.log(posts)
-
   return (
     <div>
       <Head>
@@ -22,6 +26,11 @@ export const Home = ({ posts }: Props) => {
         <h1 className="text-red-500">
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
+        <div className="recipe-list">
+          {posts.map((post) => {
+            return <RecipeCard key={post.sys.id} recipe={post} />
+          })}
+        </div>
       </main>
     </div>
   )
@@ -41,5 +50,6 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       posts: res.items,
     },
+    revalidate: 10,
   }
 }

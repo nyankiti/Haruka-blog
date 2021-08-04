@@ -10,6 +10,7 @@
     "test": "jest --env=jsdom --verbose"
   },
   "dependencies": {
+    "@contentful/rich-text-react-renderer": "15.1.0",
     "contentful": "8.4.2",
     "next": "11.0.1",
     "next-page-tester": "^0.27.2",
