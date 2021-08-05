@@ -1,11 +1,12 @@
 export interface Post {
   fields: {
     contents: any;
-    featuredImage: ContentfulImageObject;
-    tags: string[];
+    tags?: string[];
     slug: string;
     thumbnail: ContentfulImageObject;
     title: string;
+    description: string;
+    mediaImage?: ContentfulImageObject;
   },
   metadata: {
     tags: [];
@@ -64,4 +65,13 @@ export interface ContentfulImageObject {
     type: string;
     updatedAt: string;
   }
+}
+
+
+export type Tags = string[]
+
+// Tagsの要素: number; という型を作りたい、、
+// 以下の型適宜は正しいかどうかわからない
+export type Count = {
+  [key in string]: number
 }

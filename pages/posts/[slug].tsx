@@ -2,9 +2,11 @@ import React from 'react'
 import { createClient } from 'contentful'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Image from 'next/image'
+import formatDate from '../../lib/utils/formatDate'
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 /* components */
 import Skeleton from '../../components/Skeleton'
+import Tag from '../../components/Tag'
 /* types */
 import { Post } from '../../Type'
 
@@ -12,39 +14,6 @@ const client = createClient({
   space: process.env.CONTENTFUL_SPACE_ID,
   accessToken: process.env.CONTENTFUL_ACCESS_KEY,
 })
-
-const PostDetail = ({ post }) => {
-  // ISRによるリビルド中に表示するページ
-  if (!post) return <Skeleton />
-
-  const { featuredImage, title, tags, contents } = post.fields
-
-  return (
-    <div>
-      <div className="banner">
-        <Image
-          src={'https:' + featuredImage.fields.file.url}
-          width={featuredImage.fields.file.details.image.width}
-          height={featuredImage.fields.file.details.image.height}
-        />
-        <h2>{title}</h2>
-      </div>
-
-      <div className="info">
-        {tags.map((ing) => (
-          <span key={ing}>{ing}</span>
-        ))}
-      </div>
-
-      <div className="method">
-        <h3>Contents:</h3>
-        <div>{documentToReactComponents(contents)}</div>
-      </div>
-    </div>
-  )
-}
-
-export default PostDetail
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const res = await client.getEntries({
@@ -106,3 +75,57 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     revalidate: 10,
   }
 }
+
+type Props = {
+  post: Post
+}
+
+const PostDetail: React.FC<Props> = ({ post }) => {
+  // ISRによるリビルド中に表示するページ
+  if (!post) return <Skeleton />
+
+  const { mediaImage, title, tags, contents } = post.fields
+  const date = Date.parse(post.sys.updatedAt)
+
+  return (
+    <article>
+      <header>
+        <div className="pb-10 space-y-1 text-center border-b border-gray-200 dark:border-gray-700">
+          <dl>
+            <dt className="sr-only">Published on</dt>
+            <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
+              <time dateTime={post.sys.updatedAt}>{formatDate(date)}</time>
+            </dd>
+          </dl>
+          <div>
+            <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
+              {title}
+            </h1>
+          </div>
+        </div>
+      </header>
+      <div className="pb-8 divide-y divide-gray-200 xl:divide-y-0 dark:divide-gray-700 ">
+        <div className="banner">
+          <Image
+            src={'https:' + mediaImage.fields.file.url}
+            width={mediaImage.fields.file.details.image.width}
+            height={mediaImage.fields.file.details.image.height}
+          />
+          <h2>{title}</h2>
+        </div>
+
+        <div className="info">
+          {tags.map((tag) => (
+            <Tag key={tag} text={tag} />
+          ))}
+        </div>
+
+        <div className="method">
+          <div>{documentToReactComponents(contents)}</div>
+        </div>
+      </div>
+    </article>
+  )
+}
+
+export default PostDetail

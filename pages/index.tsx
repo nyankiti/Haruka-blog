@@ -1,19 +1,31 @@
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import { createClient } from 'contentful'
+import getAllPosts from '../lib/getAllPosts'
 /* components */
-import RecipeCard from '../components/RecipeCard'
+import Card from '../components/Card'
 /* types */
 import { Post } from '../Type'
 
 // 仕上げにvercelのhookをcontentfulに登録することを忘れずに！
+
+export const getStaticProps: GetStaticProps = async () => {
+  const posts = await getAllPosts()
+
+  return {
+    props: {
+      posts: posts,
+    },
+    revalidate: 10,
+  }
+}
 
 type Props = {
   posts: Post[]
 }
 
 export const Home = ({ posts }: Props) => {
+  console.log(posts)
   return (
     <div>
       <Head>
@@ -22,34 +34,23 @@ export const Home = ({ posts }: Props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <h1 className="text-red-500">
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-        <div className="recipe-list">
-          {posts.map((post) => {
-            return <RecipeCard key={post.sys.id} recipe={post} />
-          })}
+      <div className="divide-y divide-gray-200 dark:divide-gray-700">
+        <div className="pt-6 pb-8 space-y-2 md:space-y-5">
+          <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
+            Latest
+          </h1>
+          <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
+            森はるかブログ
+          </p>
         </div>
-      </main>
+        <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+          {posts.map((post) => {
+            return <Card key={post.sys.id} post={post} />
+          })}
+        </ul>
+      </div>
     </div>
   )
 }
 
 export default Home
-
-export const getStaticProps: GetStaticProps = async () => {
-  const client = createClient({
-    space: process.env.CONTENTFUL_SPACE_ID,
-    accessToken: process.env.CONTENTFUL_ACCESS_KEY,
-  })
-
-  const res = await client.getEntries({ content_type: 'post' })
-
-  return {
-    props: {
-      posts: res.items,
-    },
-    revalidate: 10,
-  }
-}
