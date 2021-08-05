@@ -22,7 +22,7 @@ const getAllTags = async() => {
   tags.forEach((tag) => {
     count[tag] = (count[tag] || 0) + 1
   })
-  return [tags, count]
+  return {tags, count}
 }
 
 export default getAllTags

@@ -7,13 +7,13 @@ import Tag from '../components/Tag'
 import Link from '../components/Link'
 
 export async function getStaticProps() {
-  const [tags, count] = await getAllTags()
+  const res = await getAllTags()
 
   return {
     // countでtagsの数を集計したのでpropsで渡すtagsは重複をなくしておく
     props: {
-      tags: tags,
-      count: count,
+      tags: res.tags,
+      count: res.count,
     },
     revalidate: 10,
   }

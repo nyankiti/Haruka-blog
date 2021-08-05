@@ -8,7 +8,7 @@ type Props = {
 }
 
 const ProjectCard: React.FC<Props> = ({ post }) => {
-  const { title, tiltle, slug, thumbnail, description } = post.fields
+  const { title, slug, thumbnail, description } = post.fields
 
   return (
     <div className="p-4 md:w-1/2 md" style={{ maxWidth: '544px' }}>
@@ -25,7 +25,7 @@ const ProjectCard: React.FC<Props> = ({ post }) => {
         <div className="p-6">
           <h2 className="mb-3 text-2xl font-bold leading-8 tracking-tight">
             <Link href={'/posts/' + slug} aria-label={`Link to ${title}`}>
-              {tiltle}
+              {title}
             </Link>
           </h2>
           <p className="mb-3 prose text-gray-500 max-w-none dark:text-gray-400">
