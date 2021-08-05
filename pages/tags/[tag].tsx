@@ -4,7 +4,7 @@ import getAllTags from '../../lib/getAllTags'
 import getAllPosts from '../../lib/getAllPosts'
 /* components */
 import Card from '../../components/Card'
-import ListLayout from '../../components/layout/ListLayout'
+import SubTitle from '../../components/SubTitle'
 /* types */
 import { Post } from '../../Type'
 
@@ -66,11 +66,7 @@ const Tag = ({ posts, tag }: Props) => {
   return (
     <>
       <div className="divide-y">
-        <div className="pt-6 pb-8 space-y-2 md:space-y-5">
-          <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-            {tag}
-          </h1>
-        </div>
+        <SubTitle text={tag} />
         <ul>
           {typeof posts !== 'undefined' && posts.length ? (
             posts.map((post) => {

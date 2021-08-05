@@ -13,15 +13,18 @@ const getAllTags = async() => {
   let tags: Tags = []
 
   res.items.forEach((item: any) => {
-    tags = tags.concat(item.fields.tags)
+    // 大文字に変換してまとめる
+    let tempTags = item.fields.tags.map(tag => tag.toUpperCase())
+    tags = tags.concat(tempTags)
   })
 
   let count: Count = {}
-  tags = Array.from(new Set(tags))
 
   tags.forEach((tag) => {
     count[tag] = (count[tag] || 0) + 1
   })
+
+  tags = Array.from(new Set(tags))
   return {tags, count}
 }
 

@@ -3,7 +3,7 @@ import Link from './Link'
 export default function Footer() {
   return (
     <footer className="flex flex-wrap items-center justify-between p-3 m-auto bg-white">
-      <div className="container mx-auto flex flex-col flex-wrap items-center justify-between">
+      <div className="container text-sm mx-auto flex flex-col flex-wrap items-center justify-between lg:text-base">
         <ul className="flex mx-auto text-black text-center">
           <li className="p-2 cursor-pointer hover:underline">
             Terms & Conditions

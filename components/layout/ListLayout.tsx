@@ -14,9 +14,6 @@ type Props = {
 }
 
 const ListLayout = ({ posts, title, pagination }: Props) => {
-  console.log(typeof posts)
-  // console.log(posts[0])
-
   return (
     <>
       <div className="divide-y">

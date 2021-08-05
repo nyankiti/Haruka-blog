@@ -56,8 +56,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     'fields.slug': params.slug,
   })
 
-  // console.log(items)
-
   // itemが存在しないページにアクセスされたときはredirectする
   if (!items.length) {
     return {
