@@ -1,7 +1,7 @@
-import {siteMetadata} from '../../data/siteMetadata'
-
 const formatDate = (date) => {
-  const now = new Date(date).toLocaleDateString(siteMetadata.locale)
+  const now = new Date(date).toLocaleDateString('ja-JP', {
+    timeZone: 'Asia/Tokyo',
+  })
   return now
 }
 
